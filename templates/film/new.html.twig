@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un film{% endblock %}
+
+{% block body %}
+
+       {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.synopsys) }}
+        {{ form_row(form.producer) }}
+
+        <div>
+            {{ form_row(form.dateSortie) }}
+        </div>
+
+        <div>
+            {{ form_row(form.imageFile) }}
+        </div>
+
+
+        <button type="submit" class="btn btn-outline-success my-3">VALIDER</button>
+
+       {{ form_end(form) }}
+
+
+{% endblock %}

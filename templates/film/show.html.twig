@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film {{ film.name }} {% endblock %}
+
+{% block body %}
+
+
+
+
+
+        <h1>Titre : <strong>{{ film.name }}</strong> </h1>
+        Synopsys : <strong>{{ film.synopsys }}</strong><br>
+        Réalisateur : <strong>{{ film.producer }}</strong><br>
+        Date de Sortie : <strong>{{ film.dateSortie|date('Y') }}</strong><br>
+        Créateur de la fiche du film : <strong>{{ film.user.username }}</strong>
+        {% if film.imageFile %}
+            <img src="images/{{ film.imageFile }}" alt="">
+        {% endif %}
+
+
+
+    {% if app.user %}
+
+        <a href="{{ path('like_film', {id:film.id}) }}" class="like btn btn-{% if film.isLikedBy(app.user) %}success {% else %}outline-success{% endif %} ">Likes : {{ film.likes|length }}</a>
+
+    {% else %}
+
+        <a href="#" class="btn btn-success like">Likes: <strong>{{ film.likes|length }}</strong></a>
+
+    {% endif %}
+
+        {% if app.user == film.user %}
+        <a href="{{ path('film_delete', {id:film.id}) }}" class="btn btn-outline-danger">SUPPRIMER</a>
+        <a href="{{ path('film_modify', {id:film.id}) }}" class="btn btn-outline-warning">MODIFIER</a>
+
+        {% else %}
+
+        <div>
+            <a href="{{ path('signin') }}" class="btn btn-outline-primary my-2">Connectez-vous</a>
+        </div>
+
+
+        {% endif %}
+
+        <div class="text-center">
+                {% for impression in film.impressions %}
+                        <hr>
+                        <strong><span class="text-uppercase">{{ impression.user.username }}</span> a posté </strong>" {{ impression.content }} "
+                    <br>
+                        {{ impression.createdAt|date('d-m-Y à H:i') }}
+
+
+                        {% if app.user %}
+
+                            <div>
+                                <a href="{{ path('like_impression', {id:impression.id}) }}" class="btn btn-{% if impression.isLikedBy(app.user) %}success{% else %}outline-success{% endif %}">Likes : {{ impression.likes|length }}</a>
+                            </div>
+
+
+
+                            {% if app.user == impression.user %}
+
+                            <div>
+                                <a href="{{ path('impression_delete', {id:impression.id}) }}" class="btn btn-outline-danger">SUPPRIMER</a>
+                                <a href="{{ path('impression_change', {id:impression.id}) }}" class="btn btn-warning mt-1">MODIFIER</a>
+                            </div>
+
+                            {% endif %}
+
+                        {% else %}
+
+                                <div>
+                                    <a href="{{ path('signin') }}" class="btn btn-outline-primary my-2">Connectez-vous</a>
+                                </div>
+
+                        {% endif %}
+                            <hr>
+
+
+
+                {% endfor %}
+        </div>
+
+    <hr>
+
+    {% if app.user %}
+
+    {{ form_start(formImpression, {'action': path('impression_new', {id:film.id})}) }}
+
+    {{ form_widget(formImpression.content) }}
+
+    <button type="submit" class="btn btn-success">COMMENTER</button>
+
+    {{ form_end(formImpression) }}
+
+    {% else %}
+
+    <a href="{{ path('signin') }}" class="btn btn-outline-primary mb-3">Connectez-vous</a><br>
+    <strong>OU</strong><br>
+    <a href="{{ path('register') }}" class="btn btn-outline-primary mt-3">Créer un compte pour commenter</a>
+
+    {% endif %}
+
+    <hr>
+
+
+
+{% endblock %}

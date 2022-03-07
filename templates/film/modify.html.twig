@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le film{% endblock %}
+
+{% block body %}
+
+       {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.synopsys) }}
+        {{ form_row(form.producer) }}
+
+        <div>
+            {{ form_row(form.dateSortie) }}
+        </div>
+
+
+        <button type="submit" class="btn btn-outline-success my-3">MODIFIER</button>
+
+       {{ form_end(form) }}
+
+
+{% endblock %}
